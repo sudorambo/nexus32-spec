@@ -41,8 +41,34 @@ Suggested columns:
 
 Additional columns for vs, vt, vd, elem, flag, etc. as needed. All numeric in hex unless noted.
 
+## GPU Command Table (`gpu-commands.csv`) — Round Three
+
+Suggested columns (spec §5.2):
+
+| Column       | Description                      | Example   |
+|--------------|----------------------------------|-----------|
+| cmd_type_hex | Command type (16-bit) hex        | 0001      |
+| name         | C macro / name                   | CMD_CLEAR |
+| size_bytes   | Fixed size or "variable"         | 16        |
+| spec_ref     | Spec section (e.g. §5.2)         | 5.2       |
+
+One row per command (CMD_CLEAR through CMD_PRESENT). Spec is authoritative.
+
+## Shader Opcode Table (`shader-opcodes.csv`) — Round Three
+
+Suggested columns (spec §5.6):
+
+| Column     | Description           | Example |
+|------------|-----------------------|---------|
+| opcode_hex | Opcode (8-bit) hex    | 00      |
+| mnemonic   | Instruction mnemonic  | MOV     |
+| operation  | Short description     | dst = src0 |
+| spec_ref   | Spec section (e.g. §5.6) | 5.6   |
+
+One row per opcode (MOV through NOP). Spec is authoritative.
+
 ## Validation
 
 - Tools that consume these tables MUST treat the spec as authoritative. If a table row conflicts with the spec, the spec wins.
 - New instructions or encoding changes require a spec update and CHANGELOG; tables are updated in the same or a follow-up change.
-- Round two deliverables: at least `integer-instructions.csv` and `vector-instructions.csv` populated from spec §2.3 and §2.4.
+- Round two: `integer-instructions.csv`, `vector-instructions.csv` from spec §2.3 and §2.4. Round three: `gpu-commands.csv` (§5.2), `shader-opcodes.csv` (§5.6).

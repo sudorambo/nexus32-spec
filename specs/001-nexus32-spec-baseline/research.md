@@ -113,3 +113,54 @@ Round two populates `encoding-tables/` and `diagrams/` with spec-derived content
 **Rationale**: Keeps round two deliverable and aligned with highest implementer need (CPU/decoder first).
 
 **Alternatives considered**: Including GPU/shaders (deferred to avoid scope creep).
+
+---
+
+# Research: Round Three (GPU Commands & Mini-Shader Opcodes)
+
+**Feature**: 001-nexus32-spec-baseline  
+**Date**: 2026-03-08
+
+## Scope
+
+Round three adds machine-readable exports for **GPU command types** (spec §5.2) and **mini-shader opcodes** (spec §5.6) so that emulator command-buffer parsers and SDK shader compilers can consume spec-derived data without re-parsing the full spec. This was listed as “can be added in a later round” in round-one research.
+
+## Decisions
+
+### 1. GPU Command Table Format
+
+**Decision**: Add `encoding-tables/gpu-commands.csv` with columns: `cmd_type_hex`, `name`, `size_bytes` (or “variable” for CMD_SET_UNIFORM), `spec_ref` (e.g. 5.2). One row per command type from spec §5.2 (CMD_CLEAR through CMD_PRESENT).
+
+**Rationale**: Matches existing encoding-table pattern; enables emulator and tools to validate command buffers and build parsers from a single CSV. Spec remains authoritative.
+
+**Alternatives considered**: JSON (more verbose); no table (rejected: round-two pattern already established for CPU/VU).
+
+---
+
+### 2. Mini-Shader Opcode Table Format
+
+**Decision**: Add `encoding-tables/shader-opcodes.csv` with columns: `opcode_hex`, `mnemonic`, `operation` (short description), `spec_ref` (e.g. 5.6). One row per opcode from spec §5.6 (MOV through NOP).
+
+**Rationale**: Supports SDK shaderc and emulator shader→SPIR-V translation; same CSV pattern as other encoding tables. Spec is authoritative.
+
+**Alternatives considered**: Separate “ISA” document (rejected: single CSV keeps encoding-tables consistent).
+
+---
+
+### 3. Contract for GPU/Shader Tables
+
+**Decision**: Do not add a new contract file. Extend `encoding-tables/README.md` (and optionally `contracts/encoding-table-format.md`) to describe the two new tables and state that they follow the same “spec authoritative” rule. Column names documented in README.
+
+**Rationale**: Lightweight; avoids contract proliferation. Encoding-table contract already establishes “spec wins” and column conventions.
+
+**Alternatives considered**: New `contracts/gpu-shader-tables.md` (rejected: README extension suffices for round three).
+
+---
+
+### 4. Round Three Scope Boundary
+
+**Decision**: Round three includes only GPU command types and shader opcodes. It does not include vertex-format bitmasks, texture-format enums, or full command struct layouts—those remain in the main spec. Optional: one-sentence note in quickstart on how to propose spec changes (link to CHANGELOG/versioning).
+
+**Rationale**: Keeps round three deliverable and consistent with round two (encoding tables only). Deeper GPU/shaders can be a later round if needed.
+
+**Alternatives considered**: Full command struct CSV (deferred; spec §5.3+ has the detail).

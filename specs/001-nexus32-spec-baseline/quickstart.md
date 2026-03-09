@@ -1,19 +1,19 @@
-# Quickstart: NEXUS-32 Spec Repository and Round-One / Round-Two Deliverables
+# Quickstart: NEXUS-32 Spec Repository and Round-One / Round-Two / Round-Three Deliverables
 
 **Feature**: 001-nexus32-spec-baseline  
 **Date**: 2026-03-08
 
-## Round One & Round Two Deliverables (Index)
+## Round One, Two & Three Deliverables (Index)
 
 | Document | Description |
 |----------|-------------|
-| [plan.md](plan.md) | Implementation plan (current: Round Two — encoding tables, diagrams) |
+| [plan.md](plan.md) | Implementation plan (current: Round Three — GPU commands, shader opcodes) |
 | [spec.md](spec.md) | Feature specification: user stories, requirements, success criteria |
-| [research.md](research.md) | Research and decisions: Round One + Round Two (encoding format, diagrams) |
-| [data-model.md](data-model.md) | Entities: Specification, ROM, versioning, Encoding Table, Diagram |
+| [research.md](research.md) | Research and decisions: Round One + Round Two + Round Three |
+| [data-model.md](data-model.md) | Entities: Specification, ROM, versioning, Encoding/Diagram/GPU/Shader tables |
 | [contracts/](contracts/) | ROM format, spec/version, encoding-table format |
 | [quickstart.md](quickstart.md) | This document: how to use the spec repo and contracts |
-| [tasks.md](tasks.md) | Task list (run /speckit.tasks for Round Two tasks) |
+| [tasks.md](tasks.md) | Task list (run /speckit.tasks for Round Three tasks) |
 
 This repository is the **NEXUS-32 specification repository** (nexus32-spec). It holds the single source of truth for the NEXUS-32 fantasy game console and the contracts that emulator, SDK, and romtools implement against.
 
@@ -59,6 +59,12 @@ When assessing conformance, every defined interface above MUST be covered by the
 1. **Encoding tables** — CSV exports from spec §2 in [encoding-tables/](../../encoding-tables/): [integer-instructions.csv](../../encoding-tables/integer-instructions.csv) (§2.3), [vector-instructions.csv](../../encoding-tables/vector-instructions.csv) (§2.4). Format: [contracts/encoding-table-format.md](contracts/encoding-table-format.md). Use for assemblers, disassemblers, and decoder tests.
 2. **Diagrams** — [diagrams/memory-map.md](../../diagrams/memory-map.md) (spec §3), [diagrams/architecture.md](../../diagrams/architecture.md) (spec §1). Markdown with tables and ASCII; cite spec sections.
 3. **Quickstart** — This section; root [README.md](../../README.md) links encoding-tables and diagrams.
+
+## Round-Three Deliverables (Complete)
+
+1. **GPU command table** — [encoding-tables/gpu-commands.csv](../../encoding-tables/gpu-commands.csv) (spec §5.2): cmd_type_hex, name, size_bytes, spec_ref. For emulator command-buffer parser and tools.
+2. **Shader opcode table** — [encoding-tables/shader-opcodes.csv](../../encoding-tables/shader-opcodes.csv) (spec §5.6): opcode_hex, mnemonic, operation, spec_ref. For SDK shaderc and emulator shader→SPIR-V path.
+3. **README** — [encoding-tables/README.md](../../encoding-tables/README.md) extended to describe the two new tables; same “spec authoritative” rule as CPU/VU tables.
 
 ## Developer Workflow (Build and Run)
 

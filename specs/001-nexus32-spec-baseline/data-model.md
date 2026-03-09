@@ -73,8 +73,22 @@ This document describes the key entities and their relationships as defined by t
 - **Relationships**: Derived from Specification; for implementer reference only.
 - **Validation**: Content MUST reflect the spec; no new interfaces or addresses.
 
+### GPU Command Table (Round Three)
+
+- **Description**: Machine-readable export of GPU command types from spec §5.2. Stored as `encoding-tables/gpu-commands.csv`. Used by emulator command-buffer parser and tools.
+- **Attributes**: cmd_type_hex, name, size_bytes (or “variable”), spec_ref. One row per command (CMD_CLEAR through CMD_PRESENT).
+- **Relationships**: Derived from Specification; MUST match spec §5.2; no new command types.
+- **Validation**: Each row MUST correspond to a defined command in NEXUS32_Specification_v1.0.md §5.2.
+
+### Shader Opcode Table (Round Three)
+
+- **Description**: Machine-readable export of mini-shader opcodes from spec §5.6. Stored as `encoding-tables/shader-opcodes.csv`. Used by SDK shaderc and emulator shader→SPIR-V path.
+- **Attributes**: opcode_hex, mnemonic, operation (short description), spec_ref. One row per opcode (MOV through NOP).
+- **Relationships**: Derived from Specification; MUST match spec §5.6; no new opcodes.
+- **Validation**: Each row MUST correspond to a defined opcode in NEXUS32_Specification_v1.0.md §5.6.
+
 ## Notes
 
 - Implementation details (C structs, file formats) are in the main spec; this data model summarizes entities and rules for planning and contracts only.
-- Round one documents and contracts the existing spec (§9, §13); round two adds Encoding Table and Diagram artifacts.
+- Round one documents and contracts the existing spec (§9, §13); round two adds Encoding Table and Diagram artifacts; round three adds GPU command and shader opcode tables.
 - For validation rules and header layout, this data model aligns with [contracts/rom-format.md](contracts/rom-format.md) and [contracts/spec-version.md](contracts/spec-version.md); the main spec (NEXUS32_Specification_v1.0.md) is the single source of truth.

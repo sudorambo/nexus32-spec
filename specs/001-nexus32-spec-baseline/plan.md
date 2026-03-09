@@ -1,25 +1,25 @@
-# Implementation Plan: NEXUS-32 Ecosystem Specification Baseline (Round Two)
+# Implementation Plan: NEXUS-32 Ecosystem Specification Baseline (Round Three)
 
 **Branch**: `001-nexus32-spec-baseline` | **Date**: 2026-03-08 | **Spec**: [spec.md](spec.md)  
 **Input**: Feature specification from `specs/001-nexus32-spec-baseline/spec.md`
 
-**Previous round**: Round one delivered spec repo layout (CHANGELOG, diagrams/, encoding-tables/, README), ROM format and spec-version contracts, quickstart, interface index, and conformance/versioning docs. All tasks in tasks.md were completed.
+**Previous rounds**: Round one delivered spec repo layout, ROM/spec-version contracts, quickstart, interface index. Round two delivered CPU/VU encoding tables (integer-instructions.csv, vector-instructions.csv), diagrams (memory-map.md, architecture.md), and encoding-table contract.
 
 ## Summary
 
-Round two extends the spec repository with **machine-readable encoding tables** (CSV exports of CPU/VU instruction encodings from spec §2) and **diagram placeholders or reference diagrams** (architecture and memory map per spec §1, §3) so that emulator and SDK implementers have a single, spec-derived source for decoders and visual reference. Optional: a small contract for encoding-table format. No application code in this repo; documentation and data only.
+Round three adds **GPU command** and **mini-shader opcode** encoding references to the spec repo: CSV (or equivalent) exports of GPU command types (spec §5.2) and mini-shader instruction opcodes (spec §5.6) so that emulator and SDK shader/command-buffer tooling have a single, spec-derived source. No new behavior or interfaces; documentation and data only. Optional: short contract or README extension for GPU/shader table format.
 
 ## Technical Context
 
-**Language/Version**: N/A (spec repo). Encoding tables: CSV (UTF-8); diagrams: Markdown with Mermaid or ASCII art, or placeholder READMEs referencing spec figures.  
-**Primary Dependencies**: None; CSV and Markdown are human- and tool-readable.  
-**Storage**: Files in `encoding-tables/` and `diagrams/` at repository root.  
-**Testing**: Manual check that encoding table rows match NEXUS32_Specification_v1.0.md §2.3 and §2.4; diagram references match spec sections.  
-**Target Platform**: This repo: any (docs/data); consumers: emulator, SDK (e.g. assembler, disassembler).  
-**Project Type**: Documentation / specification repository; round two adds spec-derived data (encoding tables) and diagram assets.  
+**Language/Version**: N/A (spec repo). Same as round two: CSV UTF-8 for encoding tables.  
+**Primary Dependencies**: None.  
+**Storage**: New files in `encoding-tables/` at repository root: `gpu-commands.csv`, `shader-opcodes.csv` (or equivalent).  
+**Testing**: Manual check that table rows match NEXUS32_Specification_v1.0.md §5.2 and §5.6.  
+**Target Platform**: This repo: any (docs/data); consumers: emulator (command buffer parser, shader compiler), SDK (shaderc, tools).  
+**Project Type**: Documentation / specification repository; round three extends encoding-tables with GPU and shader data.  
 **Performance Goals**: N/A.  
-**Constraints**: Encoding tables and diagrams MUST be derived from the spec only; no new behavior or encoding.  
-**Scale/Scope**: Round two: populate encoding-tables/ with integer and vector instruction encoding CSVs; add at least one memory-map and one architecture diagram (or placeholders with spec § references); optional encoding-table contract; update quickstart.
+**Constraints**: Tables MUST be derived from the spec only; spec is authoritative.  
+**Scale/Scope**: Round three: add gpu-commands.csv (cmd_type, name, size_byte, spec_ref) and shader-opcodes.csv (opcode_hex, mnemonic, operation, spec_ref); update encoding-tables README and quickstart.
 
 ## Constitution Check
 
@@ -27,12 +27,12 @@ Round two extends the spec repository with **machine-readable encoding tables** 
 
 | Principle | Status | Notes |
 |-----------|--------|--------|
-| I. Specification as Single Source of Truth | Pass | Encoding tables and diagrams are derived from the spec; no new encodings or interfaces. |
+| I. Specification as Single Source of Truth | Pass | GPU and shader tables are derived from spec §5; no new encodings. |
 | II. Determinism and Virtual Machine Contract | Pass | No change to VM contract. |
 | III. Forward Compatibility and Additive Changes | Pass | No change to version or ROM contracts. |
-| IV. Component Boundaries and Interfaces | Pass | Encoding tables document CPU/VU interfaces per spec; optional contract for table format. |
-| V. Testability and Spec Compliance | Pass | Tables enable automated decoder/assembler tests against spec. |
-| VI. Version and Capability Reporting | Pass | Tables and diagrams are tied to spec version (1.0). |
+| IV. Component Boundaries and Interfaces | Pass | Tables document VGP command and shader interfaces per spec. |
+| V. Testability and Spec Compliance | Pass | Tables enable command-buffer and shader-compiler tests against spec. |
+| VI. Version and Capability Reporting | Pass | Tables tied to spec version (1.0). |
 
 No violations; no complexity tracking required.
 
@@ -42,36 +42,38 @@ No violations; no complexity tracking required.
 
 ```text
 specs/001-nexus32-spec-baseline/
-├── plan.md              # This file (Round Two)
-├── research.md          # Phase 0 (Round Two decisions appended)
-├── data-model.md        # Phase 1 (optional: encoding table entity)
-├── quickstart.md        # Phase 1 (Round Two section added)
-├── contracts/           # Optional: encoding-table-format.md
+├── plan.md              # This file (Round Three)
+├── research.md          # Phase 0 (Round Three decisions appended)
+├── data-model.md        # Phase 1 (optional: GPU command / shader opcode entities)
+├── quickstart.md        # Phase 1 (Round Three section added)
+├── contracts/           # Optional: extend or reference encoding-table contract
 ├── checklists/
 │   └── requirements.md
-└── tasks.md             # From /speckit.tasks for Round Two
+└── tasks.md             # From /speckit.tasks for Round Three
 ```
 
-### Source Code (repository root — spec repo, Round Two additions)
+### Source Code (repository root — spec repo, Round Three additions)
 
 ```text
 /
 ├── NEXUS32_Specification_v1.0.md
 ├── CHANGELOG.md
-├── diagrams/                    # Round two: add memory-map + architecture diagram or placeholders
-│   ├── README.md                # (existing)
-│   ├── memory-map.md            # Memory map per spec §3 (new or placeholder)
-│   └── architecture.md          # System bus / components per spec §1 (new or placeholder)
-├── encoding-tables/             # Round two: add CSV exports from spec §2
-│   ├── README.md                # (existing)
-│   ├── integer-instructions.csv # R/I/J/S-type encodings per spec §2.3 (new)
-│   └── vector-instructions.csv  # V-type encodings per spec §2.4 (new)
+├── diagrams/
+│   ├── README.md
+│   ├── memory-map.md
+│   └── architecture.md
+├── encoding-tables/
+│   ├── README.md
+│   ├── integer-instructions.csv
+│   ├── vector-instructions.csv
+│   ├── gpu-commands.csv          # Round three: cmd_type, name, size, spec_ref (§5.2)
+│   └── shader-opcodes.csv        # Round three: opcode, mnemonic, operation (§5.6)
 ├── .specify/
 ├── specs/
 └── README.md
 ```
 
-**Structure Decision**: Same spec-only repo. Round two adds concrete files under `encoding-tables/` and `diagrams/` so that implementers can consume spec-derived data without re-extracting from the main spec document.
+**Structure Decision**: Same spec-only repo. Round three adds two CSV files under `encoding-tables/` for GPU command types and mini-shader opcodes, following the same “spec-derived, spec authoritative” pattern as round two.
 
 ## Complexity Tracking
 

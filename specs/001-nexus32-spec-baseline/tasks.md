@@ -1,92 +1,82 @@
-# Tasks: NEXUS-32 Ecosystem Specification Baseline (Round Two)
+# Tasks: NEXUS-32 Ecosystem Specification Baseline (Round Three)
 
 **Input**: Design documents from `specs/001-nexus32-spec-baseline/`  
-**Prerequisites**: plan.md (Round Two), spec.md, research.md, data-model.md, contracts/
+**Prerequisites**: plan.md (Round Three), spec.md, research.md, data-model.md, contracts/
 
 **Tests**: Not requested in the feature specification; no test tasks included.
 
-**Organization**: Tasks are grouped by user story. Round Two adds encoding tables (spec-derived SSOT support) and diagrams (implementer reference). This repository is documentation-only; all tasks create or update docs and data files.
+**Organization**: Tasks are grouped by user story. Round Three adds GPU command and mini-shader opcode encoding tables (spec-derived SSOT support and tool/emulator conformance). This repository is documentation-only; all tasks create or update docs and data files.
 
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
-- **[Story]**: User story (US1, US2, US3) for round-two deliverables
+- **[Story]**: User story (US1, US3) for round-three deliverables
 - Include exact file paths in descriptions
 
 ## Path Conventions
 
-- **Spec repo root**: `/` = repository root (encoding-tables/, diagrams/, README.md)
+- **Spec repo root**: `/` = repository root (encoding-tables/, README.md)
 - **Feature docs**: `specs/001-nexus32-spec-baseline/` (plan.md, quickstart.md, contracts/)
 
 ---
 
-## Phase 1: Setup (Round Two)
+## Phase 1: Setup (Round Three)
 
-**Purpose**: Prepare encoding-tables and contract reference so CSV files can be added consistently.
+**Purpose**: Ensure encoding-tables README and contract describe the two new tables so CSVs can be added consistently.
 
-- [x] T001 Update encoding-tables/README.md at repository root to describe CSV column format (mnemonic, format, opcode_hex, func_hex, cycles, spec_ref for integer; mnemonic, vfunc_hex, cycles, spec_ref for vector) and add link to specs/001-nexus32-spec-baseline/contracts/encoding-table-format.md
+- [x] T001 Extend encoding-tables/README.md at repository root to describe gpu-commands.csv (cmd_type_hex, name, size_bytes, spec_ref per spec §5.2) and shader-opcodes.csv (opcode_hex, mnemonic, operation, spec_ref per spec §5.6), and link to specs/001-nexus32-spec-baseline/contracts/encoding-table-format.md for column details
 
-**Checkpoint**: encoding-tables/README.md documents format and contract link
+**Checkpoint**: encoding-tables/README documents GPU and shader table format; contract already defines columns (Round Three plan)
 
 ---
 
-## Phase 2: Foundational (Round Two)
+## Phase 2: Foundational (Round Three)
 
-**Purpose**: Ensure encoding-table contract is in place and plan references are correct.
+**Purpose**: Confirm encoding-table contract and plan reference the new files and source sections.
 
-- [x] T002 Verify specs/001-nexus32-spec-baseline/contracts/encoding-table-format.md exists and specifies integer-instructions.csv and vector-instructions.csv columns; confirm plan.md references encoding-tables/ and diagrams/ paths
+- [x] T002 Verify specs/001-nexus32-spec-baseline/contracts/encoding-table-format.md defines gpu-commands.csv and shader-opcodes.csv columns; confirm plan.md references encoding-tables/gpu-commands.csv and encoding-tables/shader-opcodes.csv and NEXUS32_Specification_v1.0.md §5.2 and §5.6
 
-**Checkpoint**: Contract and plan aligned; ready to add CSV and diagram files
+**Checkpoint**: Contract and plan aligned; ready to add GPU and shader CSV files
 
 ---
 
 ## Phase 3: User Story 1 — Spec as Single Source of Truth (Priority: P1) 🎯 MVP
 
-**Goal**: Machine-readable encoding tables derived from the spec so that instruction encodings are traceable to NEXUS32_Specification_v1.0.md §2; no new encodings; spec remains authoritative.
+**Goal**: Machine-readable GPU command and shader opcode tables derived from the spec so that command types and shader opcodes are traceable to NEXUS32_Specification_v1.0.md §5.2 and §5.6; no new encodings; spec remains authoritative.
 
-**Independent Test**: Every row in integer-instructions.csv and vector-instructions.csv corresponds to a defined instruction in spec §2.3 and §2.4; column format matches contracts/encoding-table-format.md.
+**Independent Test**: Every row in gpu-commands.csv and shader-opcodes.csv corresponds to a defined command or opcode in spec §5.2 and §5.6; column format matches contracts/encoding-table-format.md.
 
-- [x] T003 [P] [US1] Create encoding-tables/integer-instructions.csv at repository root with header row and one row per integer instruction from NEXUS32_Specification_v1.0.md §2.3 (mnemonic, format, opcode_hex, func_hex, cycles, spec_ref; add encoding-field columns as needed)
-- [x] T004 [P] [US1] Create encoding-tables/vector-instructions.csv at repository root with header row and one row per vector instruction from NEXUS32_Specification_v1.0.md §2.4 (mnemonic, vfunc_hex, cycles, spec_ref; add vs/vt/vd columns as needed per contract)
+- [x] T003 [P] [US1] Create encoding-tables/gpu-commands.csv at repository root with header row (cmd_type_hex,name,size_bytes,spec_ref) and one row per GPU command from NEXUS32_Specification_v1.0.md §5.2 (CMD_CLEAR 0x0001 through CMD_PRESENT 0x00FF); use "variable" for CMD_SET_UNIFORM size
 
-**Checkpoint**: Both CSVs exist and are populated from spec §2; US1 deliverable complete
+- [x] T004 [P] [US1] Create encoding-tables/shader-opcodes.csv at repository root with header row (opcode_hex,mnemonic,operation,spec_ref) and one row per mini-shader opcode from NEXUS32_Specification_v1.0.md §5.6 (MOV 0x00 through NOP 0x15)
 
----
-
-## Phase 4: User Story 2 — Game Developers Can Build and Run ROMs (Priority: P2)
-
-**Goal**: Diagrams give implementers a visual reference for memory map and architecture so that SDK/emulator work is easier; supports the build-and-run workflow defined in quickstart.
-
-**Independent Test**: diagrams/memory-map.md and diagrams/architecture.md exist and reference spec §3 and §1; content reflects the spec (address ranges, component names).
-
-- [x] T005 [P] [US2] Create diagrams/memory-map.md at repository root with memory map (address ranges, region names) from NEXUS32_Specification_v1.0.md §3; use Mermaid or ASCII; cite spec §3
-- [x] T006 [P] [US2] Create diagrams/architecture.md at repository root with system bus and component layout from NEXUS32_Specification_v1.0.md §1 (CPU, VU, Memory, DMA, VGP, APU, Input, Timer); use Mermaid or ASCII; cite spec §1
-
-**Checkpoint**: Memory map and architecture diagrams exist; US2 deliverable complete
+**Checkpoint**: Both CSVs exist and are populated from spec §5.2 and §5.6; US1 deliverable complete
 
 ---
 
-## Phase 5: User Story 3 — Emulator and Tools Conform to the Spec (Priority: P3)
+## Phase 4: User Story 3 — Emulator and Tools Conform to the Spec (Priority: P3)
 
-**Goal**: Document that encoding tables support conformance verification (decoder/assembler tests); spec remains authoritative.
+**Goal**: Document that GPU and shader tables support conformance verification (command-buffer parser, shader compiler); spec remains authoritative.
 
-**Independent Test**: README or quickstart states that tables enable tests against spec §2 and that the spec wins on any conflict.
+**Independent Test**: README or quickstart states that gpu-commands and shader-opcodes tables enable tests against spec §5 and that the spec wins on any conflict; tables validate against spec.
 
-- [x] T007 [US3] Add to encoding-tables/README.md at repository root: encoding tables enable decoder and assembler conformance tests per NEXUS32_Specification_v1.0.md §2; the spec is authoritative and wins over the tables on any discrepancy
+- [x] T005 Validate encoding-tables/gpu-commands.csv and encoding-tables/shader-opcodes.csv against NEXUS32_Specification_v1.0.md §5.2 and §5.6; fix any missing or incorrect rows (spec is authoritative)
 
-**Checkpoint**: Conformance use of tables is documented; US3 deliverable complete
+- [x] T006 [US3] Add to encoding-tables/README.md at repository root: GPU and shader encoding tables enable command-buffer and shader-compiler conformance tests per NEXUS32_Specification_v1.0.md §5; the spec is authoritative and wins over the tables on any discrepancy
+
+**Checkpoint**: Conformance use of GPU/shader tables is documented; US3 deliverable complete
 
 ---
 
-## Phase 6: Polish & Cross-Cutting Concerns
+## Phase 5: Polish & Cross-Cutting Concerns
 
-**Purpose**: Link new artifacts from README and quickstart; validate tables and diagrams against the spec.
+**Purpose**: Link new artifacts from root README and quickstart; finalize Round Three deliverables.
 
-- [x] T008 [P] Update README.md at repository root to add one-line descriptions and links for encoding-tables/ (CSV instruction encodings from spec §2) and diagrams/ (memory map §3, architecture §1)
-- [x] T009 Validate encoding-tables/integer-instructions.csv and encoding-tables/vector-instructions.csv against NEXUS32_Specification_v1.0.md §2.3 and §2.4; fix any missing or incorrect rows (spec is authoritative)
-- [x] T010 Update specs/001-nexus32-spec-baseline/quickstart.md Round-Two Deliverables section to state that encoding tables (integer-instructions.csv, vector-instructions.csv) and diagrams (memory-map.md, architecture.md) are in place with paths and spec references
+- [x] T007 [P] Update README.md at repository root to add one-line descriptions and links for encoding-tables/gpu-commands.csv (GPU command types from spec §5.2) and encoding-tables/shader-opcodes.csv (mini-shader opcodes from spec §5.6)
 
-**Checkpoint**: README and quickstart updated; tables validated; Round Two complete
+- [x] T008 Update specs/001-nexus32-spec-baseline/quickstart.md Round-Three Deliverables section to state that encoding tables (gpu-commands.csv, shader-opcodes.csv) are in place with paths and spec references (§5.2, §5.6); mark Round-Three Deliverables as Complete
+
+**Checkpoint**: README and quickstart updated; Round Three complete
 
 ---
 
@@ -97,65 +87,52 @@
 - **Setup (Phase 1)**: No dependencies — can start immediately
 - **Foundational (Phase 2)**: Depends on Setup (T001); quick check of contract and plan
 - **US1 (Phase 3)**: Depends on Foundational; T003 and T004 can run in parallel
-- **US2 (Phase 4)**: Depends on Foundational; T005 and T006 can run in parallel; can run in parallel with Phase 3
-- **US3 (Phase 5)**: Depends on Phase 3 (encoding tables exist); T007 updates README
-- **Polish (Phase 6)**: Depends on Phases 3, 4, 5 so that files exist to link and validate
+- **US3 (Phase 4)**: Depends on US1 (CSVs must exist to validate and document); T005 then T006
+- **Polish (Phase 5)**: Depends on Phase 4; T007 and T008 can run in parallel
 
 ### User Story Dependencies
 
-- **US1 (encoding tables)**: After Phase 2; no dependency on US2
-- **US2 (diagrams)**: After Phase 2; no dependency on US1
-- **US3 (conformance note)**: After US1 (tables exist)
+- **User Story 1 (P1)**: GPU and shader tables as spec-derived data — can start after Foundational
+- **User Story 3 (P3)**: Conformance documentation and validation — depends on US1 (tables created)
 
 ### Parallel Opportunities
 
-- T003 and T004 can run in parallel (different CSV files)
-- T005 and T006 can run in parallel (different diagram files)
-- After Phase 2, Phase 3 (T003, T004) and Phase 4 (T005, T006) can run in parallel
-- T008 can run in parallel with T009 (different files)
+- T003 and T004 (create gpu-commands.csv and shader-opcodes.csv) can run in parallel
+- T007 and T008 (README and quickstart updates) can run in parallel after T006
 
 ---
 
-## Parallel Example: Phase 3 and Phase 4
+## Parallel Example: User Story 1
 
 ```text
-# After Phase 2:
-T003: Create integer-instructions.csv
-T004: Create vector-instructions.csv
-T005: Create diagrams/memory-map.md
-T006: Create diagrams/architecture.md
-(T003–T006 can be done in parallel by different owners)
+# Create both Round Three encoding tables in parallel:
+Task T003: Create encoding-tables/gpu-commands.csv from spec §5.2
+Task T004: Create encoding-tables/shader-opcodes.csv from spec §5.6
 ```
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (User Story 1 — Encoding Tables)
+### MVP First (User Story 1 Only)
 
 1. Complete Phase 1: Setup (T001)
 2. Complete Phase 2: Foundational (T002)
-3. Complete Phase 3: US1 (T003, T004) — encoding tables
-4. **STOP and VALIDATE**: Confirm CSVs match spec §2 and contract format
-5. Optional: Run T007 (conformance note) and T009 (validation)
+3. Complete Phase 3: User Story 1 (T003, T004)
+4. **STOP and VALIDATE**: Confirm both CSVs match spec §5.2 and §5.6
 
-### Incremental Delivery
+### Full Round Three
 
-1. Setup + Foundational → Ready for data files
-2. Add US1 (encoding tables) → Spec-derived CSVs for tools
-3. Add US2 (diagrams) → Memory map and architecture reference
-4. Add US3 (conformance note) → Document testability
-5. Polish → README, quickstart, validation
-
-### Parallel Team Strategy
-
-- After Phase 2: Owner A — integer-instructions.csv (T003); Owner B — vector-instructions.csv (T004); Owner C — memory-map.md (T005); Owner D — architecture.md (T006). Then one person does T007, T008–T010.
+1. Complete Setup + Foundational → ready to add CSVs
+2. Add US1 tables (T003, T004) → validate (T005)
+3. Add US3 conformance note (T006) → Polish (T007, T008)
 
 ---
 
 ## Notes
 
-- [P] tasks use different files; no same-file conflicts
-- [USn] labels map Round Two deliverables to spec user stories for traceability
-- This repo contains no application code; every task produces or updates documentation or CSV/diagram content
-- Suggested MVP scope: Phases 1–3 (Setup, Foundational, US1) so encoding tables are complete and spec-derived
+- [P] tasks = different files, no dependencies
+- [US1] / [US3] map tasks to user stories for traceability
+- Round Three does not add new diagrams (US2); Round Two already delivered memory-map and architecture
+- Spec is authoritative: on any discrepancy between a table and NEXUS32_Specification_v1.0.md, the spec wins
+- Commit after each task or logical group
