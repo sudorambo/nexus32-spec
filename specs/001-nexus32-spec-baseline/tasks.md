@@ -1,80 +1,78 @@
-# Tasks: NEXUS-32 Ecosystem Specification Baseline (Round Four)
+# Tasks: NEXUS-32 Ecosystem Specification Baseline (Round Five)
 
 **Input**: Design documents from `specs/001-nexus32-spec-baseline/`  
-**Prerequisites**: plan.md (Round Four), spec.md, research.md, data-model.md, contracts/
+**Prerequisites**: plan.md (Round Five), spec.md, research.md, data-model.md, contracts/
 
 **Tests**: Not requested in the feature specification; no test tasks included.
 
-**Organization**: Tasks are grouped by user story. Round Four adds the I/O and system register reference (spec-derived SSOT support and implementer conformance). This repository is documentation-only; all tasks create or update docs.
+**Organization**: Tasks are grouped by user story. Round Five adds contributing and spec-change workflow (CONTRIBUTING.md) and optional implementation checklist for other repos. This repository is documentation-only; all tasks create or update docs.
 
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
-- **[Story]**: User story (US1, US3) for round-four deliverables
+- **[Story]**: User story (US1, US3) for round-five deliverables
 - Include exact file paths in descriptions
 
 ## Path Conventions
 
-- **Spec repo root**: `/` = repository root (reference/, README.md)
+- **Spec repo root**: `/` = repository root (CONTRIBUTING.md, README.md, docs/)
 - **Feature docs**: `specs/001-nexus32-spec-baseline/` (plan.md, quickstart.md, contracts/)
 
 ---
 
-## Phase 1: Setup (Round Four)
+## Phase 1: Setup (Round Five)
 
-**Purpose**: Create reference directory and README so the I/O/system register document can be added consistently.
+**Purpose**: Ensure docs/ directory exists for optional implementation checklist.
 
-- [x] T001 Create reference/ directory at repository root and add reference/README.md stating that reference documents are derived from NEXUS32_Specification_v1.0.md, the spec is authoritative, and this reference is for implementer convenience only
+- [x] T001 Create docs/ directory at repository root (for implementation checklist in T004; may be skipped if checklist is omitted)
 
-**Checkpoint**: reference/ exists with README; ready to add io-and-system-registers.md
+**Checkpoint**: docs/ exists; ready to add CONTRIBUTING and optional checklist
 
 ---
 
-## Phase 2: Foundational (Round Four)
+## Phase 2: Foundational (Round Five)
 
-**Purpose**: Confirm plan and research reference spec §3 and §8 and the path reference/io-and-system-registers.md.
+**Purpose**: Confirm plan and research reference CONTRIBUTING.md and optional implementation checklist.
 
-- [x] T002 Verify specs/001-nexus32-spec-baseline/plan.md and research.md reference NEXUS32_Specification_v1.0.md §3 (memory map) and §8 (timer, system, interrupt); confirm plan references reference/io-and-system-registers.md
+- [x] T002 Verify specs/001-nexus32-spec-baseline/plan.md and research.md reference CONTRIBUTING.md at repository root and optional docs/implementation-checklist.md; confirm alignment with constitution and contracts
 
-**Checkpoint**: Plan and research aligned; ready to create reference content
+**Checkpoint**: Plan and research aligned; ready to create CONTRIBUTING and checklist
 
 ---
 
 ## Phase 3: User Story 1 — Spec as Single Source of Truth (Priority: P1) 🎯 MVP
 
-**Goal**: Consolidated I/O and system register reference derived from the spec so that base addresses and register layouts are traceable to NEXUS32_Specification_v1.0.md §3 and §8; no new addresses or behavior; spec remains authoritative.
+**Goal**: CONTRIBUTING.md that reinforces spec-first changes, when to bump spec version, and CHANGELOG hygiene; links to constitution and contracts.
 
-**Independent Test**: Every table in reference/io-and-system-registers.md corresponds to spec §3 (I/O regions) and §8 (system, timer, interrupt registers); each section cites the spec.
+**Independent Test**: CONTRIBUTING.md exists at repository root, describes how to propose spec changes and when to bump version, and links to .specify/memory/constitution.md and specs/001-nexus32-spec-baseline/contracts/.
 
-- [x] T003 [P] [US1] Create reference/io-and-system-registers.md at repository root with (1) I/O regions table: base address, end address or size, region name, spec section (§3) for GPU, DMA, DMA table, Audio, Input, Timer, System, Interrupt control from NEXUS32_Specification_v1.0.md §3; (2) System registers table (0x0B006000, §8.3): offset, name, access, brief description, spec ref; (3) Frame counter (0x0B005020, §8.2); (4) Interrupt control (0x0B007000, §8.4). Cite NEXUS32_Specification_v1.0.md in each section.
+- [x] T003 [US1] Create CONTRIBUTING.md at repository root with: (1) brief purpose of this repo (spec as single source of truth for NEXUS-32); (2) how to propose spec changes (e.g. issue or PR referencing NEXUS32_Specification_v1.0.md and contracts); (3) when to bump the spec version (observable behavior or interface changes) and reference to CHANGELOG.md and specs/001-nexus32-spec-baseline/contracts/spec-version.md; (4) CHANGELOG hygiene (entry per version); (5) link to .specify/memory/constitution.md for principles
 
-**Checkpoint**: reference/io-and-system-registers.md exists and is populated from spec §3 and §8; US1 deliverable complete
+**Checkpoint**: CONTRIBUTING.md in place; US1 deliverable complete
 
 ---
 
 ## Phase 4: User Story 3 — Emulator and Tools Conform to the Spec (Priority: P3)
 
-**Goal**: Document that the reference supports conformance verification (register layout, addresses); spec remains authoritative.
+**Goal**: Optional implementation checklist so emulator, SDK, and romtools can self-check conformance; spec and contracts remain authoritative.
 
-**Independent Test**: Reference README or doc intro states that the reference enables implementers to verify I/O and register layout against the spec and that the spec wins on any discrepancy; content validated against spec.
+**Independent Test**: docs/implementation-checklist.md exists (if implemented) with conformance items and links to contracts, reference/, encoding-tables; CONTRIBUTING or quickstart mentions the checklist.
 
-- [x] T004 Validate reference/io-and-system-registers.md against NEXUS32_Specification_v1.0.md §3 and §8; fix any missing or incorrect entries (spec is authoritative)
+- [x] T004 [US3] (Optional) Create docs/implementation-checklist.md at repository root with conformance self-check items for emulator, SDK, and romtools (e.g. ROM format contract, SYS_VERSION reporting, spec vs. ROM format version handling), with links to specs/001-nexus32-spec-baseline/contracts/, reference/, and encoding-tables/
 
-- [x] T005 [US3] Add to reference/README.md at repository root: this reference enables implementers to verify memory-mapped I/O and system/register layout against NEXUS32_Specification_v1.0.md §3 and §8; the spec is authoritative and wins on any discrepancy
-
-**Checkpoint**: Conformance use of reference is documented; US3 deliverable complete
+**Checkpoint**: Optional checklist in place; US3 deliverable complete
 
 ---
 
 ## Phase 5: Polish & Cross-Cutting Concerns
 
-**Purpose**: Link reference from root README and quickstart; finalize Round Four deliverables.
+**Purpose**: Link CONTRIBUTING and optional checklist from README and quickstart; finalize Round Five deliverables.
 
-- [x] T006 [P] Update README.md at repository root to add one-line description and link for reference/ (I/O and system register reference from spec §3, §8)
+- [x] T005 [P] Update README.md at repository root to add one-line description and link for CONTRIBUTING.md (how to propose spec changes, versioning, CHANGELOG); if docs/implementation-checklist.md exists, add link to it
 
-- [x] T007 Update specs/001-nexus32-spec-baseline/quickstart.md Round-Four Deliverables section to state that reference/io-and-system-registers.md is in place with path and spec references (§3, §8); mark Round-Four Deliverables as Complete
+- [x] T006 Update specs/001-nexus32-spec-baseline/quickstart.md Round-Five Deliverables section to state that CONTRIBUTING.md is in place with path; if implementation checklist was added, state docs/implementation-checklist.md with path; mark Round-Five Deliverables as Complete
 
-**Checkpoint**: README and quickstart updated; Round Four complete
+**Checkpoint**: README and quickstart updated; Round Five complete
 
 ---
 
@@ -84,27 +82,27 @@
 
 - **Setup (Phase 1)**: No dependencies — can start immediately
 - **Foundational (Phase 2)**: Depends on Setup (T001); quick check of plan and research
-- **US1 (Phase 3)**: Depends on Foundational; T003 creates the reference document
-- **US3 (Phase 4)**: Depends on US1 (reference doc must exist to validate and document); T004 then T005
-- **Polish (Phase 5)**: Depends on Phase 4; T006 and T007 can run in parallel
+- **US1 (Phase 3)**: Depends on Foundational; T003 creates CONTRIBUTING.md
+- **US3 (Phase 4)**: Depends on US1 (CONTRIBUTING can reference checklist); T004 is optional
+- **Polish (Phase 5)**: Depends on Phase 3 (and Phase 4 if checklist added); T005 and T006 can run in parallel
 
 ### User Story Dependencies
 
-- **User Story 1 (P1)**: I/O and system register reference as spec-derived data — can start after Foundational
-- **User Story 3 (P3)**: Conformance documentation and validation — depends on US1 (reference created)
+- **User Story 1 (P1)**: CONTRIBUTING.md — can start after Foundational
+- **User Story 3 (P3)**: Optional implementation checklist — can follow US1; may be skipped
 
 ### Parallel Opportunities
 
-- T006 and T007 (README and quickstart updates) can run in parallel after T005
+- T005 and T006 (README and quickstart updates) can run in parallel after T003 (and T004 if done)
 
 ---
 
 ## Parallel Example: Polish
 
 ```text
-# After Phase 4, update docs in parallel:
-Task T006: Update README.md with reference/ link
-Task T007: Update quickstart.md Round-Four section to Complete
+# After Phase 3 (and optional Phase 4), update docs in parallel:
+Task T005: Update README.md with CONTRIBUTING and optional checklist link
+Task T006: Update quickstart.md Round-Five section to Complete
 ```
 
 ---
@@ -116,13 +114,14 @@ Task T007: Update quickstart.md Round-Four section to Complete
 1. Complete Phase 1: Setup (T001)
 2. Complete Phase 2: Foundational (T002)
 3. Complete Phase 3: User Story 1 (T003)
-4. **STOP and VALIDATE**: Confirm reference content matches spec §3 and §8
+4. **STOP and VALIDATE**: CONTRIBUTING.md reflects constitution and contracts
+5. Optional: Add Polish (T005, T006) to link CONTRIBUTING from README and quickstart
 
-### Full Round Four
+### Full Round Five
 
-1. Complete Setup + Foundational → ready to add reference doc
-2. Add US1 reference (T003) → validate (T004)
-3. Add US3 conformance note (T005) → Polish (T006, T007)
+1. Complete Setup + Foundational → ready for CONTRIBUTING
+2. Add US1 CONTRIBUTING (T003) → optionally add US3 checklist (T004)
+3. Polish (T005, T006) → link CONTRIBUTING and optional checklist; mark Round Five Complete
 
 ---
 
@@ -130,6 +129,6 @@ Task T007: Update quickstart.md Round-Four section to Complete
 
 - [P] tasks = different files, no dependencies
 - [US1] / [US3] map tasks to user stories for traceability
-- Round Four does not add encoding tables or diagrams; it adds a single reference document under reference/
-- Spec is authoritative: on any discrepancy between the reference and NEXUS32_Specification_v1.0.md, the spec wins
+- T004 is optional: round five is complete with CONTRIBUTING.md only; checklist is additive
+- Content in CONTRIBUTING and checklist MUST align with constitution and existing contracts; no new behavioral requirements
 - Commit after each task or logical group

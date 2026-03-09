@@ -1,25 +1,25 @@
-# Implementation Plan: NEXUS-32 Ecosystem Specification Baseline (Round Four)
+# Implementation Plan: NEXUS-32 Ecosystem Specification Baseline (Round Five)
 
 **Branch**: `001-nexus32-spec-baseline` | **Date**: 2026-03-08 | **Spec**: [spec.md](spec.md)  
 **Input**: Feature specification from `specs/001-nexus32-spec-baseline/spec.md`
 
-**Previous rounds**: Round one: spec repo layout, ROM/spec-version contracts, quickstart. Round two: CPU/VU encoding tables, diagrams (memory-map, architecture), encoding-table contract. Round three: GPU commands CSV, shader opcodes CSV, README/quickstart updates.
+**Previous rounds**: Round one: layout, ROM/spec-version contracts, quickstart. Round two: CPU/VU encoding tables, diagrams, encoding-table contract. Round three: GPU commands and shader opcodes CSVs. Round four: reference/ with I/O and system register reference (§3, §8).
 
 ## Summary
 
-Round four adds a **memory-mapped I/O and system register reference** to the spec repo: a single consolidated reference document (Markdown) that lists I/O regions (base address, size, name, spec section) and system/timer/interrupt registers (offset, name, access, description, spec section) from NEXUS32_Specification_v1.0.md §3 and §8. This gives emulator and SDK implementers one place to look up base addresses and key register layouts without re-scanning the full spec. No new behavior or interfaces; documentation only. Optional: CONTRIBUTING or spec-change workflow note.
+Round five adds **contributing and spec-change workflow** documentation: a CONTRIBUTING.md (or equivalent) at repository root that describes how to propose changes to the specification, when to bump the spec version, CHANGELOG hygiene, and links to the constitution and contracts. Optionally, a short **implementation checklist** (e.g. in docs/ or .specify/) that other repos (emulator, SDK, romtools) can use to self-check conformance (ROM format, SYS_VERSION, contracts). No new contracts; documentation only. Aligns with constitution “Spec-first changes” and “Constitution check.”
 
 ## Technical Context
 
-**Language/Version**: N/A (spec repo). Markdown; no code.  
+**Language/Version**: N/A (spec repo). Markdown only.  
 **Primary Dependencies**: None.  
-**Storage**: New file(s) at repository root, e.g. `reference/io-registers.md` or `reference-tables/io-and-system-registers.md` (directory and name TBD in research).  
-**Testing**: Manual check that every row/section cites the spec and matches spec §3 (memory map) and §8 (timer, system, interrupt registers).  
-**Target Platform**: This repo: any (docs); consumers: emulator, SDK (register headers, debuggers).  
-**Project Type**: Documentation / specification repository; round four adds reference documentation.  
+**Storage**: CONTRIBUTING.md at repository root; optional checklist in docs/ or .specify/ (e.g. docs/implementation-checklist.md).  
+**Testing**: Manual review that CONTRIBUTING reflects constitution and existing contracts.  
+**Target Platform**: This repo: any (docs); consumers: maintainers, contributors, other-repo implementers.  
+**Project Type**: Documentation / specification repository; round five adds governance and process docs.  
 **Performance Goals**: N/A.  
-**Constraints**: Reference MUST be derived from the spec only; spec is authoritative.  
-**Scale/Scope**: Round four: one consolidated I/O + system register reference; optional CONTRIBUTING or workflow note. No new CSVs in encoding-tables; this is a prose/table reference.
+**Constraints**: Content MUST align with constitution and contracts; no new behavioral requirements.  
+**Scale/Scope**: Round five: CONTRIBUTING.md (spec-change workflow, versioning, CHANGELOG); optional implementation checklist for other repos.
 
 ## Constitution Check
 
@@ -27,12 +27,12 @@ Round four adds a **memory-mapped I/O and system register reference** to the spe
 
 | Principle | Status | Notes |
 |-----------|--------|--------|
-| I. Specification as Single Source of Truth | Pass | Reference is derived from spec §3, §8; no new addresses or behavior. |
+| I. Specification as Single Source of Truth | Pass | CONTRIBUTING reinforces spec-first changes and versioning. |
 | II. Determinism and Virtual Machine Contract | Pass | No change to VM contract. |
-| III. Forward Compatibility and Additive Changes | Pass | No change to version or ROM contracts. |
-| IV. Component Boundaries and Interfaces | Pass | Reference documents existing I/O and system interfaces per spec. |
-| V. Testability and Spec Compliance | Pass | Enables implementers to verify register layout and addresses against spec. |
-| VI. Version and Capability Reporting | Pass | Reference tied to spec version (1.0). |
+| III. Forward Compatibility and Additive Changes | Pass | Workflow doc references version and CHANGELOG rules. |
+| IV. Component Boundaries and Interfaces | Pass | Optional checklist references contracts and interfaces. |
+| V. Testability and Spec Compliance | Pass | Implementation checklist supports conformance self-check. |
+| VI. Version and Capability Reporting | Pass | CONTRIBUTING documents when/how to bump version. |
 
 No violations; no complexity tracking required.
 
@@ -42,32 +42,33 @@ No violations; no complexity tracking required.
 
 ```text
 specs/001-nexus32-spec-baseline/
-├── plan.md              # This file (Round Four)
-├── research.md          # Phase 0 (Round Four decisions appended)
-├── data-model.md        # Phase 1 (optional: I/O register reference entity)
-├── quickstart.md        # Phase 1 (Round Four section added)
+├── plan.md              # This file (Round Five)
+├── research.md          # Phase 0 (Round Five decisions appended)
+├── data-model.md        # Phase 1 (optional: Contributing / Checklist entity)
+├── quickstart.md        # Phase 1 (Round Five section added)
 ├── contracts/
 ├── checklists/
-└── tasks.md             # From /speckit.tasks for Round Four
+└── tasks.md             # From /speckit.tasks for Round Five
 ```
 
-### Repository root (Round Four additions)
+### Repository root (Round Five additions)
 
 ```text
 /
 ├── NEXUS32_Specification_v1.0.md
 ├── CHANGELOG.md
+├── CONTRIBUTING.md          # Round five: spec-change workflow, versioning, CHANGELOG
 ├── diagrams/
 ├── encoding-tables/
-├── reference/                    # Round four: I/O and system register reference
-│   ├── README.md                 # (optional) Purpose and spec ref
-│   └── io-and-system-registers.md  # Consolidated table(s) from §3, §8
+├── reference/
+├── docs/                    # Optional: implementation checklist
+│   └── implementation-checklist.md
 ├── .specify/
 ├── specs/
 └── README.md
 ```
 
-**Structure Decision**: Add a `reference/` directory (or equivalent) for consolidated reference docs. Round four adds one file: I/O regions + system/timer/interrupt registers, all citing spec sections. No new contract unless we later add a “reference document format” contract; for round four, README in reference/ or a short intro in the doc suffices.
+**Structure Decision**: CONTRIBUTING.md at root is standard for open-source and contributor-facing repos. Optional implementation checklist can live in docs/ to keep root minimal, or in .specify/ if it is part of the Speckit workflow; research will decide.
 
 ## Complexity Tracking
 

@@ -11,6 +11,7 @@ This repository is **nexus32-spec**: the single source of truth for the NEXUS-32
 
 - **[specs/001-nexus32-spec-baseline/quickstart.md](specs/001-nexus32-spec-baseline/quickstart.md)** — How to use this repo, round-one deliverables, developer workflow, and links to contracts.
 - **Contracts** (ROM format and version reporting): [specs/001-nexus32-spec-baseline/contracts/](specs/001-nexus32-spec-baseline/contracts/).
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** — How to propose spec changes, versioning, and CHANGELOG. [docs/implementation-checklist.md](docs/implementation-checklist.md) — Conformance self-check for emulator, SDK, and romtools.
 
 ## Supporting Directories
 

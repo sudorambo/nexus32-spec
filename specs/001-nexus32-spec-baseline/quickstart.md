@@ -7,13 +7,13 @@
 
 | Document | Description |
 |----------|-------------|
-| [plan.md](plan.md) | Implementation plan (current: Round Four — I/O and system register reference) |
+| [plan.md](plan.md) | Implementation plan (current: Round Five — contributing and spec-change workflow) |
 | [spec.md](spec.md) | Feature specification: user stories, requirements, success criteria |
-| [research.md](research.md) | Research and decisions: Round One + Round Two + Round Three |
+| [research.md](research.md) | Research and decisions: Round One through Round Five |
 | [data-model.md](data-model.md) | Entities: Specification, ROM, versioning, Encoding/Diagram/GPU/Shader tables, I/O reference |
 | [contracts/](contracts/) | ROM format, spec/version, encoding-table format |
 | [quickstart.md](quickstart.md) | This document: how to use the spec repo and contracts |
-| [tasks.md](tasks.md) | Task list (run /speckit.tasks for Round Four tasks) |
+| [tasks.md](tasks.md) | Task list (run /speckit.tasks for Round Five tasks) |
 
 This repository is the **NEXUS-32 specification repository** (nexus32-spec). It holds the single source of truth for the NEXUS-32 fantasy game console and the contracts that emulator, SDK, and romtools implement against.
 
@@ -24,6 +24,7 @@ This repository is the **NEXUS-32 specification repository** (nexus32-spec). It 
 - **diagrams/** — Architecture and memory map diagrams.
 - **encoding-tables/** — Instruction and GPU/shader encoding exports (CSV).
 - **reference/** — Consolidated I/O and system register reference (Round Four).
+- **CONTRIBUTING.md** — How to propose spec changes, versioning, CHANGELOG (Round Five).
 - **specs/** — Feature specs and implementation plans (e.g. this baseline and plan).
 - **.specify/** — Speckit workflow (constitution, templates, scripts).
 
@@ -71,6 +72,12 @@ When assessing conformance, every defined interface above MUST be covered by the
 
 1. **I/O and system register reference** — [reference/io-and-system-registers.md](../../reference/io-and-system-registers.md): consolidated table of memory-mapped I/O regions (spec §3) and system/timer/interrupt registers (spec §8). [reference/README.md](../../reference/README.md) states spec is authoritative and reference supports conformance verification.
 2. **Quickstart** — This section and root [README.md](../../README.md) link to reference/.
+
+## Round-Five Deliverables (Complete)
+
+1. **CONTRIBUTING.md** — At repository root: how to propose spec changes, when to bump spec version, CHANGELOG hygiene, link to [.specify/memory/constitution.md](../../.specify/memory/constitution.md) and contracts.
+2. **Implementation checklist** — [docs/implementation-checklist.md](../../docs/implementation-checklist.md): conformance self-check list for emulator, SDK, romtools; links to contracts, [reference/](../../reference/), and [encoding-tables/](../../encoding-tables/).
+3. **Quickstart** — This section and root [README.md](../../README.md) link to CONTRIBUTING and the implementation checklist.
 
 ## Developer Workflow (Build and Run)
 

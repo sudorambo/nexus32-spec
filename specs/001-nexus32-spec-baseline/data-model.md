@@ -94,8 +94,22 @@ This document describes the key entities and their relationships as defined by t
 - **Relationships**: Derived from Specification; MUST match spec §3 and §8; no new addresses or behavior.
 - **Validation**: Every table row or section MUST cite the spec section it comes from; content MUST match NEXUS32_Specification_v1.0.md.
 
+### Contributing and Spec-Change Workflow (Round Five)
+
+- **Description**: Process documentation for proposing spec changes and versioning. Stored as CONTRIBUTING.md at repository root. References constitution and contracts; describes when to bump spec version and CHANGELOG hygiene.
+- **Attributes**: How to propose changes; when to bump version; CHANGELOG rules; link to constitution and contracts.
+- **Relationships**: Aligns with Constitution (Spec-first changes, Constitution check); references contracts/spec-version.md, rom-format.md; no new interfaces.
+- **Validation**: Content MUST align with constitution and existing contracts; no new behavioral requirements.
+
+### Implementation Checklist (Round Five, optional)
+
+- **Description**: Optional checklist for emulator, SDK, and romtools to self-check conformance (e.g. ROM format contract, SYS_VERSION, version handling). Stored as docs/implementation-checklist.md (or equivalent). Not a test suite; human- or tool-checkable list.
+- **Attributes**: Conformance items per repo type; links to contracts, reference/, encoding-tables.
+- **Relationships**: Supports Constitution V (testability); references existing contracts and spec; no new contracts.
+- **Validation**: Checklist items MUST trace to spec or contracts; no new requirements.
+
 ## Notes
 
 - Implementation details (C structs, file formats) are in the main spec; this data model summarizes entities and rules for planning and contracts only.
-- Round one documents and contracts the existing spec (§9, §13); round two adds Encoding Table and Diagram artifacts; round three adds GPU command and shader opcode tables; round four adds I/O and system register reference.
+- Round one documents and contracts the existing spec (§9, §13); round two adds Encoding Table and Diagram artifacts; round three adds GPU command and shader opcode tables; round four adds I/O and system register reference; round five adds contributing workflow and optional implementation checklist.
 - For validation rules and header layout, this data model aligns with [contracts/rom-format.md](contracts/rom-format.md) and [contracts/spec-version.md](contracts/spec-version.md); the main spec (NEXUS32_Specification_v1.0.md) is the single source of truth.

@@ -215,3 +215,54 @@ Round four adds a **consolidated reference** for memory-mapped I/O regions and s
 **Rationale**: Single clear deliverable; CONTRIBUTING and checklists are orthogonal and can follow in round five if desired.
 
 **Alternatives considered**: Adding CONTRIBUTING (deferred); asset type enum table (deferred).
+
+---
+
+# Research: Round Five (Contributing and Spec-Change Workflow)
+
+**Feature**: 001-nexus32-spec-baseline  
+**Date**: 2026-03-08
+
+## Scope
+
+Round five adds **contributing and spec-change workflow** documentation so that maintainers and contributors know how to propose changes to the specification, when to bump the spec version, and how to keep CHANGELOG in sync. Optionally, an **implementation checklist** for other repos (emulator, SDK, romtools) to self-check conformance against the spec and contracts. This was deferred from round four (“can follow in round five if desired”).
+
+## Decisions
+
+### 1. CONTRIBUTING.md Location and Content
+
+**Decision**: Add CONTRIBUTING.md at repository root. Content: (1) brief purpose of the repo (spec as single source of truth); (2) how to propose spec changes (e.g. issue or PR, with reference to the spec document and contracts); (3) when to bump the spec version (observable behavior or interface changes) and link to CHANGELOG.md and contracts/spec-version.md; (4) CHANGELOG hygiene (entry per release/version); (5) link to .specify/memory/constitution.md for principles. No mandatory PR template or code of conduct unless already present.
+
+**Rationale**: Standard open-source practice; aligns with constitution “Spec-first changes” and “Constitution check.” Gives contributors a single entry point for process.
+
+**Alternatives considered**: Placing workflow only in .specify/ (rejected: CONTRIBUTING.md is discoverable at root); full code of conduct (out of scope for round five).
+
+---
+
+### 2. Implementation Checklist (Optional)
+
+**Decision**: Optionally add a one- or two-page **implementation checklist** (e.g. docs/implementation-checklist.md) that lists conformance items for emulator, SDK, and romtools: e.g. ROM format contract implemented, SYS_VERSION reported, spec version vs. ROM format version handling, links to contracts and reference/encoding-tables. Not a test suite; a human- or tool-checkable list for self-assessment.
+
+**Rationale**: Supports constitution V (testability and spec compliance) by giving other repos a clear checklist; reduces ambiguity on “what must we implement?”
+
+**Alternatives considered**: No checklist (CONTRIBUTING only); full test spec (out of scope—tests live in other repos).
+
+---
+
+### 3. No New Contracts
+
+**Decision**: Round five does not add a new contract. CONTRIBUTING and the optional checklist reference existing contracts (rom-format, spec-version, encoding-table-format) and the constitution.
+
+**Rationale**: Process and checklist are documentation, not new interfaces. Existing contracts remain the normative references.
+
+**Alternatives considered**: “Contributing contract” (rejected: CONTRIBUTING is process, not an API).
+
+---
+
+### 4. Round Five Scope Boundary
+
+**Decision**: Round five does not add asset-type reference tables, DMA/APU/Input register tables, or automation (e.g. CI that enforces CHANGELOG). Focus is CONTRIBUTING.md and optional implementation checklist only.
+
+**Rationale**: Keeps round five deliverable and governance-focused. Asset/register tables can be a later round.
+
+**Alternatives considered**: Asset type table (deferred); CI for CHANGELOG (deferred).
