@@ -59,8 +59,22 @@ This document describes the key entities and their relationships as defined by t
 - **Spec**: Draft → Versioned (1.0) → Amended (version bump + CHANGELOG). No formal state machine; version and CHANGELOG reflect current state.
 - **ROM**: Source + assets → Built (SDK) → Packed (romtools) → Valid (romcheck) → Loadable by emulator. Invalid ROMs are rejected at validation or load with clear feedback per spec.
 
+### Encoding Table (Round Two)
+
+- **Description**: Machine-readable export of instruction encodings from the spec (e.g. CSV). One file per instruction set: integer (§2.3), vector (§2.4). Used by assemblers, disassemblers, and tests.
+- **Attributes**: Mnemonic, opcode (hex), format type, encoding fields, cycles, spec section. Format defined in [contracts/encoding-table-format.md](contracts/encoding-table-format.md) or encoding-tables/README.md.
+- **Relationships**: Derived from Specification; MUST match spec; no new encodings.
+- **Validation**: Each row MUST correspond to a defined instruction in NEXUS32_Specification_v1.0.md §2.
+
+### Diagram (Round Two)
+
+- **Description**: Visual reference for architecture or memory map, stored in `diagrams/` (e.g. memory-map.md, architecture.md). Content is Markdown with Mermaid or ASCII; references spec §1, §3.
+- **Attributes**: Title, spec section reference, format (Mermaid/ASCII). No binary images required.
+- **Relationships**: Derived from Specification; for implementer reference only.
+- **Validation**: Content MUST reflect the spec; no new interfaces or addresses.
+
 ## Notes
 
 - Implementation details (C structs, file formats) are in the main spec; this data model summarizes entities and rules for planning and contracts only.
-- Round one does not introduce new entities; it documents and contracts the existing spec (§9, §13).
+- Round one documents and contracts the existing spec (§9, §13); round two adds Encoding Table and Diagram artifacts.
 - For validation rules and header layout, this data model aligns with [contracts/rom-format.md](contracts/rom-format.md) and [contracts/spec-version.md](contracts/spec-version.md); the main spec (NEXUS32_Specification_v1.0.md) is the single source of truth.

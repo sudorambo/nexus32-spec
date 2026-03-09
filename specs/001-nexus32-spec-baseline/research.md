@@ -62,3 +62,54 @@ Round one focuses on the **spec repository** (this repo) as the single source of
 - Implementation of emulator, SDK, or romtools (other repos).
 - Concrete test suites (lived in emulator/romtools repos; contracts in this repo enable them).
 - Mini-shader or GPU command binary format exports (can be added in a later round).
+
+---
+
+# Research: Round Two (Encoding Tables & Diagrams)
+
+**Feature**: 001-nexus32-spec-baseline  
+**Date**: 2026-03-08
+
+## Scope
+
+Round two populates `encoding-tables/` and `diagrams/` with spec-derived content so that emulator and SDK implementers have machine-readable encodings and visual reference without re-parsing the full spec.
+
+## Decisions
+
+### 1. Encoding Table Format (CSV)
+
+**Decision**: Export CPU integer (§2.3) and vector (§2.4) instruction encodings as CSV files. Columns: mnemonic, opcode (hex), func/format type, encoding fields (e.g. rs, rt, rd, immediate), cycles, and spec section reference. One CSV per instruction set (integer, vector).
+
+**Rationale**: CSV is tool-friendly (assemblers, disassemblers, tests), version-controllable, and unambiguous. Matches constitution V (testability).
+
+**Alternatives considered**: JSON (more verbose); inline in spec only (harder for tools to consume).
+
+---
+
+### 2. Diagram Format and Content
+
+**Decision**: Add at least one memory-map diagram and one architecture (system bus) diagram. Format: Markdown with Mermaid and/or ASCII art, or a short placeholder that references spec §1 and §3 figures. Files: `diagrams/memory-map.md`, `diagrams/architecture.md`.
+
+**Rationale**: Spec §13.1 calls for "architecture diagrams, memory maps"; round one created empty directories. Round two adds content so the repo is self-contained for implementers.
+
+**Alternatives considered**: Binary images (harder to diff); external diagram tool only (would not live in repo).
+
+---
+
+### 3. Optional Encoding-Table Contract
+
+**Decision**: Optionally add `contracts/encoding-table-format.md` describing CSV column names, units (hex for opcodes), and that tables are authoritative only insofar as they match the spec. If omitted, README in encoding-tables/ suffices.
+
+**Rationale**: Enables consistent consumption by multiple tools; contract is lightweight (one page).
+
+**Alternatives considered**: No contract (README only); full schema (overkill for round two).
+
+---
+
+### 4. Round Two Scope Boundary
+
+**Decision**: Round two does not add GPU command encodings or mini-shader opcode tables; those can be a later round. Focus is CPU/VU instruction encodings and memory map + architecture diagrams.
+
+**Rationale**: Keeps round two deliverable and aligned with highest implementer need (CPU/decoder first).
+
+**Alternatives considered**: Including GPU/shaders (deferred to avoid scope creep).

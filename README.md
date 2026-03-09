@@ -14,8 +14,8 @@ This repository is **nexus32-spec**: the single source of truth for the NEXUS-32
 
 ## Supporting Directories
 
-- **diagrams/** — Architecture diagrams and memory maps (see [diagrams/README.md](diagrams/README.md)).
-- **encoding-tables/** — CSV exports of instruction encodings (see [encoding-tables/README.md](encoding-tables/README.md)).
+- **[diagrams/](diagrams/)** — Architecture (§1) and memory map (§3): [memory-map.md](diagrams/memory-map.md), [architecture.md](diagrams/architecture.md). See [diagrams/README.md](diagrams/README.md).
+- **[encoding-tables/](encoding-tables/)** — CSV instruction encodings from spec §2: [integer-instructions.csv](encoding-tables/integer-instructions.csv), [vector-instructions.csv](encoding-tables/vector-instructions.csv). See [encoding-tables/README.md](encoding-tables/README.md).
 
 ## Ecosystem Repositories
 

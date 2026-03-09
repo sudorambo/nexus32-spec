@@ -1,19 +1,19 @@
-# Quickstart: NEXUS-32 Spec Repository and Round-One Deliverables
+# Quickstart: NEXUS-32 Spec Repository and Round-One / Round-Two Deliverables
 
 **Feature**: 001-nexus32-spec-baseline  
 **Date**: 2026-03-08
 
-## Round One Deliverables (Index)
+## Round One & Round Two Deliverables (Index)
 
 | Document | Description |
 |----------|-------------|
-| [plan.md](plan.md) | Implementation plan: tech context, constitution check, project structure |
+| [plan.md](plan.md) | Implementation plan (current: Round Two — encoding tables, diagrams) |
 | [spec.md](spec.md) | Feature specification: user stories, requirements, success criteria |
-| [research.md](research.md) | Research and decisions: spec-as-SSOT, versioning, contracts |
-| [data-model.md](data-model.md) | Entities and relationships: Specification, ROM, versioning, etc. |
-| [contracts/](contracts/) | ROM format and spec/version contracts for implementers |
+| [research.md](research.md) | Research and decisions: Round One + Round Two (encoding format, diagrams) |
+| [data-model.md](data-model.md) | Entities: Specification, ROM, versioning, Encoding Table, Diagram |
+| [contracts/](contracts/) | ROM format, spec/version, encoding-table format |
 | [quickstart.md](quickstart.md) | This document: how to use the spec repo and contracts |
-| [tasks.md](tasks.md) | Task list for round-one implementation |
+| [tasks.md](tasks.md) | Task list (run /speckit.tasks for Round Two tasks) |
 
 This repository is the **NEXUS-32 specification repository** (nexus32-spec). It holds the single source of truth for the NEXUS-32 fantasy game console and the contracts that emulator, SDK, and romtools implement against.
 
@@ -46,13 +46,19 @@ When assessing conformance, every defined interface above MUST be covered by the
 
 **Conformance review**: When assessing an implementation (emulator, SDK, or tool), every defined interface (memory map, registers, GPU commands, ROM layout) MUST be covered by the specification. Use the Interface index above to trace each interface to its spec section; no behavior may be introduced that is not defined or permitted by the spec.
 
-## Round-One Deliverables
+## Round-One Deliverables (Done)
 
-1. **Spec layout** — Ensure `CHANGELOG.md`, `diagrams/`, and `encoding-tables/` exist and are referenced from the main spec.
+1. **Spec layout** — `CHANGELOG.md`, `diagrams/`, `encoding-tables/`, root README.
 2. **Contracts** — ROM format and version reporting:
    - [contracts/rom-format.md](contracts/rom-format.md): ROM header layout, validation rules, forward compatibility.
    - [contracts/spec-version.md](contracts/spec-version.md): Spec version, ROM format version, compatibility rules, SYS_VERSION.
-3. **Quickstart** — This document.
+3. **Quickstart** — This document; interface index; conformance and workflow docs.
+
+## Round-Two Deliverables (Complete)
+
+1. **Encoding tables** — CSV exports from spec §2 in [encoding-tables/](../../encoding-tables/): [integer-instructions.csv](../../encoding-tables/integer-instructions.csv) (§2.3), [vector-instructions.csv](../../encoding-tables/vector-instructions.csv) (§2.4). Format: [contracts/encoding-table-format.md](contracts/encoding-table-format.md). Use for assemblers, disassemblers, and decoder tests.
+2. **Diagrams** — [diagrams/memory-map.md](../../diagrams/memory-map.md) (spec §3), [diagrams/architecture.md](../../diagrams/architecture.md) (spec §1). Markdown with tables and ASCII; cite spec sections.
+3. **Quickstart** — This section; root [README.md](../../README.md) links encoding-tables and diagrams.
 
 ## Developer Workflow (Build and Run)
 
