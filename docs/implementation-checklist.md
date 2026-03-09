@@ -32,6 +32,12 @@ This checklist helps **emulator**, **SDK**, and **romtools** implementers self-c
 - [ ] **GPU command buffer**: Command interpretation follows spec §5; use [encoding-tables/gpu-commands.csv](../encoding-tables/gpu-commands.csv) and [encoding-tables/shader-opcodes.csv](../encoding-tables/shader-opcodes.csv) as reference (spec §5.2, §5.6 is authoritative).
 - [ ] **Determinism**: Observable behavior (cycle budget, DMA, GPU, APU) matches spec; host-side optimizations only when game-observable behavior is correct.
 
+### Debug Overlay (ClearUI)
+
+The emulator uses [ClearUI](../../clearui-1.1.1/) as an immediate-mode debug overlay (registers, disassembly, memory) composited over the Vulkan framebuffer. For full build setup, Vulkan integration details, gotchas, and how to add widgets, see the integration guide:
+
+> **[ClearUI Integration Guide](../../nexus32-emulator/docs/clearui-integration.md)**
+
 ---
 
 ## SDK (compiler, assembler, linker, tools)
