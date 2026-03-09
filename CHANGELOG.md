@@ -9,6 +9,17 @@ All notable changes to the NEXUS-32 specification document are recorded here. Th
 
 ---
 
+## [1.0-clarify] — 2026-03-09
+
+Clarifications only — no observable behavior changes; spec version remains 1.0.
+
+- Added MFC0/MTC0 encoding detail (S-type, opcode 0x3F): bit layout for `rd` (coprocessor register index) and `rt` (GPR), plus coprocessor-0 register table.
+- Added `cmd_set_scissor_t` struct definition in §5.3 (GPU command 0x000B).
+- Added VLW/VSW hybrid encoding bit layout and explanation to §2.4 (how `rs` and the 7-bit signed offset are reconstructed).
+- Added GPU control register reference (0x0B000000 region) to `reference/io-and-system-registers.md`: GPU_STATUS, GPU_CONTROL, GPU_CB_ADDR, GPU_FB_ADDR, GPU_WIDTH, GPU_HEIGHT, GPU_AUX_RTx.
+
+---
+
 ## [1.0] — 2026-03-08
 
 - Initial specification release: NEXUS-32 Fantasy Game Console — Hardware & Ecosystem Specification.

@@ -315,6 +315,25 @@ All load/store addresses are computed as `rs + sign_ext(offset)`. Word loads (LW
 | MFC0     | 0x10 | rt = special_reg[rd] (move from coprocessor 0) | 1      |
 | MTC0     | 0x11 | special_reg[rd] = rt (move to coprocessor 0)   | 1      |
 
+**MFC0/MTC0 encoding:** These are S-Type instructions (opcode 0x3F). The 21-bit operand field encodes `rt` (GPR) in bits 20–16 and `rd` (coprocessor-0 register index) in bits 15–11. The remaining bits (10–0) are reserved and must be zero.
+
+```
+ 31    26 25   21 20   16 15   11 10           0
+┌────────┬───────┬───────┬───────┬─────────────┐
+│ 0x3F   │ func  │  rt   │  rd   │  reserved   │
+│  6 bit │ 5 bit │ 5 bit │ 5 bit │   11 bit    │
+└────────┴───────┴───────┴───────┴─────────────┘
+```
+
+**Coprocessor-0 register indices:**
+
+| rd | Name   | Description                            |
+| -- | ------ | -------------------------------------- |
+| 0  | SR     | Status Register (IE, IM, Z, N flags)  |
+| 1  | EPC    | Exception Program Counter              |
+| 2  | CAUSE  | Exception cause code                   |
+| 3  | COUNT  | Cycle counter (read-only via MFC0)     |
+
 ### 2.4 Vector Instruction Set
 
 All vector instructions use V-Type encoding. Primary opcode: `0x3E`.
@@ -363,6 +382,22 @@ All vector instructions use V-Type encoding. Primary opcode: `0x3E`.
 | 0xB–0xF | —       | Reserved              |
 
 **Vector load/store:** VLW and VSW use a hybrid encoding. The base address register `rs` comes from the integer register file (5 bits borrowed from the `vs` and `elem` fields). The offset is encoded in the `flag` and lower `vfunc` bits, providing a 7-bit signed offset scaled by 16 (the vector size), giving a range of ±1024 bytes from the base.
+
+**VLW/VSW bit layout:**
+
+```
+ 31    26 25   22 21   18 17   14 13  10 9      4 3    0
+┌────────┬───────┬───────┬───────┬─────┬────────┬──────┐
+│ 0x3E   │  vd   │ rs[4:1]│rs[0],│offset│ 0x0A  │offset│
+│ opcode │ 4 bit │ 4 bit │elem  │[6:4]│ vfunc  │[3:0] │
+│        │       │       │[2:0] │3 bit│  6 bit │ 4 bit│
+└────────┴───────┴───────┴───────┴─────┴────────┴──────┘
+```
+
+- `vd` (bits 25–22): destination vector register for VLW; source for VSW (vfunc 0x0B).
+- `rs` (5 bits): integer base register, reconstructed as `{vt[3:1], elem[3], elem[2]}` → `{bits 21–19, bit 14, bit 13}`.
+- `offset` (7 bits, signed): reconstructed as `{elem[2:0], flag[3:0]}` → `{bits 12–10, bits 3–0}`. Scaled by 16: effective offset = `sign_ext7(offset) × 16`.
+- Effective address = `GPR[rs] + sign_ext7(offset) × 16`. Must be 16-byte aligned.
 
 ### 2.5 Cycle Budget Model
 
@@ -790,6 +825,20 @@ typedef struct {
     uint16_t dst_stride;      // Dest image width
 } cmd_copy_region_t;
 ```
+
+**CMD_SET_SCISSOR (0x000B):**
+
+```c
+typedef struct {
+    gpu_cmd_header_t header;  // { 0x000B, 20 }
+    uint32_t x;               // Scissor rectangle left
+    uint32_t y;               // Scissor rectangle top
+    uint32_t width;           // Scissor rectangle width
+    uint32_t height;          // Scissor rectangle height
+} cmd_set_scissor_t;
+```
+
+Fragments outside the scissor rectangle are discarded. Setting width=0 or height=0 disables scissoring (equivalent to full-framebuffer scissor).
 
 **CMD_PRESENT (0x00FF):**
 

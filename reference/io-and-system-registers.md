@@ -26,7 +26,32 @@ From NEXUS32_Specification_v1.0.md §3.1 (Memory Map). Only these regions are ba
 
 ---
 
-## 2. System registers (0x0B006000, §8.3)
+## 2. GPU control registers (0x0B000000, §3.4)
+
+From NEXUS32_Specification_v1.0.md §3.4. Base address: **0x0B000000**.
+
+| Offset | Name           | Access | Description                                                        | Spec |
+| ------ | -------------- | ------ | ------------------------------------------------------------------ | ---- |
+| 0x00   | GPU_STATUS     | R      | Bit 0: busy (processing CB). Bit 1: VBlank active.                | §3.4 |
+| 0x04   | GPU_CONTROL    | W      | Bit 0: submit frame (PRESENT). Bit 1: reset GPU.                  | §3.4 |
+| 0x08   | GPU_CB_ADDR    | R/W    | Command buffer start address (default: 0x0A000000).                | §3.4 |
+| 0x0C   | GPU_CB_SIZE    | R/W    | Bytes written to command buffer this frame.                        | §3.4 |
+| 0x10   | GPU_FB_ADDR    | R/W    | Framebuffer 0 base address in VRAM.                                | §3.4 |
+| 0x14   | GPU_FB1_ADDR   | R/W    | Framebuffer 1 base address (double buffering).                     | §3.4 |
+| 0x18   | GPU_DB_ADDR    | R/W    | Depth buffer base address in VRAM.                                 | §3.4 |
+| 0x1C   | GPU_WIDTH      | R/W    | Framebuffer width (default: 640).                                  | §3.4 |
+| 0x20   | GPU_HEIGHT     | R/W    | Framebuffer height (default: 480).                                 | §3.4 |
+| 0x24   | GPU_DRAW_CALLS | R      | Draw calls processed last frame (profiling).                       | §3.4 |
+| 0x28   | GPU_VRAM_USED  | R      | VRAM bytes used for textures+shaders (profiling).                  | §3.4 |
+| 0x30   | GPU_AUX_RT0    | R/W    | Auxiliary render target 0 VRAM address.                            | §5.7 |
+| 0x34   | GPU_AUX_RT1    | R/W    | Auxiliary render target 1 VRAM address.                            | §5.7 |
+| 0x38   | GPU_AUX_RT2    | R/W    | Auxiliary render target 2 VRAM address.                            | §5.7 |
+
+Auxiliary render targets (0x30–0x3B) enable multi-pass rendering. Write a VRAM address to configure; switch active target via CMD_SET_RENDER_TARGET.
+
+---
+
+## 3. System registers (0x0B006000, §8.3)
 
 From NEXUS32_Specification_v1.0.md §8.3. Base address: **0x0B006000**.
 
@@ -42,7 +67,7 @@ From NEXUS32_Specification_v1.0.md §8.3. Base address: **0x0B006000**.
 
 ---
 
-## 3. Frame counter (0x0B005020, §8.2)
+## 4. Frame counter (0x0B005020, §8.2)
 
 From NEXUS32_Specification_v1.0.md §8.2. Base address: **0x0B005000**; frame counter at offset 0x20.
 
@@ -54,7 +79,7 @@ Read-only. Overflows after ~2.27 years at 60 FPS.
 
 ---
 
-## 4. Interrupt control registers (0x0B007000, §8.4)
+## 5. Interrupt control registers (0x0B007000, §8.4)
 
 From NEXUS32_Specification_v1.0.md §8.4. Base address: **0x0B007000**.
 
