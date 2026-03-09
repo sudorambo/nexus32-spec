@@ -7,13 +7,13 @@
 
 | Document | Description |
 |----------|-------------|
-| [plan.md](plan.md) | Implementation plan (current: Round Three — GPU commands, shader opcodes) |
+| [plan.md](plan.md) | Implementation plan (current: Round Four — I/O and system register reference) |
 | [spec.md](spec.md) | Feature specification: user stories, requirements, success criteria |
 | [research.md](research.md) | Research and decisions: Round One + Round Two + Round Three |
-| [data-model.md](data-model.md) | Entities: Specification, ROM, versioning, Encoding/Diagram/GPU/Shader tables |
+| [data-model.md](data-model.md) | Entities: Specification, ROM, versioning, Encoding/Diagram/GPU/Shader tables, I/O reference |
 | [contracts/](contracts/) | ROM format, spec/version, encoding-table format |
 | [quickstart.md](quickstart.md) | This document: how to use the spec repo and contracts |
-| [tasks.md](tasks.md) | Task list (run /speckit.tasks for Round Three tasks) |
+| [tasks.md](tasks.md) | Task list (run /speckit.tasks for Round Four tasks) |
 
 This repository is the **NEXUS-32 specification repository** (nexus32-spec). It holds the single source of truth for the NEXUS-32 fantasy game console and the contracts that emulator, SDK, and romtools implement against.
 
@@ -22,7 +22,8 @@ This repository is the **NEXUS-32 specification repository** (nexus32-spec). It 
 - **[NEXUS32_Specification_v1.0.md](../../NEXUS32_Specification_v1.0.md)** — Full hardware and ecosystem specification (CPU, memory, DMA, GPU, APU, input, ROM format, SDK, toolchain, multi-repo layout).
 - **CHANGELOG.md** — Spec version history.
 - **diagrams/** — Architecture and memory map diagrams.
-- **encoding-tables/** — Instruction encoding exports, e.g. CSV.
+- **encoding-tables/** — Instruction and GPU/shader encoding exports (CSV).
+- **reference/** — Consolidated I/O and system register reference (Round Four).
 - **specs/** — Feature specs and implementation plans (e.g. this baseline and plan).
 - **.specify/** — Speckit workflow (constitution, templates, scripts).
 
@@ -65,6 +66,11 @@ When assessing conformance, every defined interface above MUST be covered by the
 1. **GPU command table** — [encoding-tables/gpu-commands.csv](../../encoding-tables/gpu-commands.csv) (spec §5.2): cmd_type_hex, name, size_bytes, spec_ref. For emulator command-buffer parser and tools.
 2. **Shader opcode table** — [encoding-tables/shader-opcodes.csv](../../encoding-tables/shader-opcodes.csv) (spec §5.6): opcode_hex, mnemonic, operation, spec_ref. For SDK shaderc and emulator shader→SPIR-V path.
 3. **README** — [encoding-tables/README.md](../../encoding-tables/README.md) extended to describe the two new tables; same “spec authoritative” rule as CPU/VU tables.
+
+## Round-Four Deliverables (Complete)
+
+1. **I/O and system register reference** — [reference/io-and-system-registers.md](../../reference/io-and-system-registers.md): consolidated table of memory-mapped I/O regions (spec §3) and system/timer/interrupt registers (spec §8). [reference/README.md](../../reference/README.md) states spec is authoritative and reference supports conformance verification.
+2. **Quickstart** — This section and root [README.md](../../README.md) link to reference/.
 
 ## Developer Workflow (Build and Run)
 

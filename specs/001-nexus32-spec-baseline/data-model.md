@@ -87,8 +87,15 @@ This document describes the key entities and their relationships as defined by t
 - **Relationships**: Derived from Specification; MUST match spec §5.6; no new opcodes.
 - **Validation**: Each row MUST correspond to a defined opcode in NEXUS32_Specification_v1.0.md §5.6.
 
+### I/O and System Register Reference (Round Four)
+
+- **Description**: Consolidated reference document for memory-mapped I/O regions and system/timer/interrupt registers. Stored as `reference/io-and-system-registers.md`. Derived from spec §3 (memory map) and §8 (timer, system, interrupt). For implementer convenience; spec remains authoritative.
+- **Attributes**: I/O region table (base, size, name, spec_ref); system registers (offset, name, access, description, spec_ref); optional reference/README.md.
+- **Relationships**: Derived from Specification; MUST match spec §3 and §8; no new addresses or behavior.
+- **Validation**: Every table row or section MUST cite the spec section it comes from; content MUST match NEXUS32_Specification_v1.0.md.
+
 ## Notes
 
 - Implementation details (C structs, file formats) are in the main spec; this data model summarizes entities and rules for planning and contracts only.
-- Round one documents and contracts the existing spec (§9, §13); round two adds Encoding Table and Diagram artifacts; round three adds GPU command and shader opcode tables.
+- Round one documents and contracts the existing spec (§9, §13); round two adds Encoding Table and Diagram artifacts; round three adds GPU command and shader opcode tables; round four adds I/O and system register reference.
 - For validation rules and header layout, this data model aligns with [contracts/rom-format.md](contracts/rom-format.md) and [contracts/spec-version.md](contracts/spec-version.md); the main spec (NEXUS32_Specification_v1.0.md) is the single source of truth.

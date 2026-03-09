@@ -164,3 +164,54 @@ Round three adds machine-readable exports for **GPU command types** (spec §5.2)
 **Rationale**: Keeps round three deliverable and consistent with round two (encoding tables only). Deeper GPU/shaders can be a later round if needed.
 
 **Alternatives considered**: Full command struct CSV (deferred; spec §5.3+ has the detail).
+
+---
+
+# Research: Round Four (I/O and System Register Reference)
+
+**Feature**: 001-nexus32-spec-baseline  
+**Date**: 2026-03-08
+
+## Scope
+
+Round four adds a **consolidated reference** for memory-mapped I/O regions and system/timer/interrupt registers so that emulator and SDK implementers can look up base addresses and register layouts in one place without re-scanning the full spec. Content is derived solely from NEXUS32_Specification_v1.0.md §3 (memory map) and §8 (timer, system, interrupt registers).
+
+## Decisions
+
+### 1. Reference Document Location and Format
+
+**Decision**: Add a `reference/` directory at repository root with a single Markdown file `io-and-system-registers.md`. Content: (1) table of I/O regions (base address, end address or size, name, spec section); (2) tables for system registers (§8.3), timer/frame (§8.2), and interrupt control (§8.4) with offset, name, access, brief description, spec ref. Optional: `reference/README.md` stating that the spec is authoritative and this is a convenience reference.
+
+**Rationale**: One directory keeps “reference” docs separate from encoding-tables (instruction/command/opcode data) and diagrams (architecture/memory map visuals). Markdown tables are diff-friendly and cite spec sections explicitly.
+
+**Alternatives considered**: CSV for registers (rejected: prose descriptions and access R/W/R fit better in Markdown); adding to diagrams/ (rejected: diagrams are visual; this is a register table); putting under encoding-tables/ (rejected: encoding-tables is for instruction/command encodings).
+
+---
+
+### 2. Scope of Register Content
+
+**Decision**: Include (a) all I/O regions from spec §3 (GPU, DMA, DMA table, Audio, Input, Timer, System, Interrupt control) with base, size, name; (b) system registers at 0x0B006000 (§8.3); (c) frame counter at 0x0B005020 (§8.2); (d) interrupt control at 0x0B007000 (§8.4). Do not duplicate full DMA, APU, or Input register layouts in round four—those remain in the main spec; round four focuses on “where things are” and the system/timer/IRQ register set that every implementer needs.
+
+**Rationale**: Keeps round four deliverable small and immediately useful; DMA/APU/Input detail can be added in a later round if needed.
+
+**Alternatives considered**: Full DMA, APU, Input register tables (deferred to avoid scope creep).
+
+---
+
+### 3. Contract or README
+
+**Decision**: No new contract. Add a short `reference/README.md` (or an intro paragraph in `io-and-system-registers.md`) stating that this reference is derived from the spec, the spec is authoritative, and the document is for convenience only.
+
+**Rationale**: Matches round three approach (README extension, no new contract). Reference format is simple (tables with spec refs).
+
+**Alternatives considered**: New contract for “reference document format” (rejected: overkill for one document).
+
+---
+
+### 4. Round Four Scope Boundary
+
+**Decision**: Round four does not add CONTRIBUTING.md, implementation checklists for other repos, or asset-type reference tables. Those can be a later round. Focus is I/O regions + system/timer/interrupt registers only.
+
+**Rationale**: Single clear deliverable; CONTRIBUTING and checklists are orthogonal and can follow in round five if desired.
+
+**Alternatives considered**: Adding CONTRIBUTING (deferred); asset type enum table (deferred).

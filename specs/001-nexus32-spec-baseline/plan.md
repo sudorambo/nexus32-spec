@@ -1,25 +1,25 @@
-# Implementation Plan: NEXUS-32 Ecosystem Specification Baseline (Round Three)
+# Implementation Plan: NEXUS-32 Ecosystem Specification Baseline (Round Four)
 
 **Branch**: `001-nexus32-spec-baseline` | **Date**: 2026-03-08 | **Spec**: [spec.md](spec.md)  
 **Input**: Feature specification from `specs/001-nexus32-spec-baseline/spec.md`
 
-**Previous rounds**: Round one delivered spec repo layout, ROM/spec-version contracts, quickstart, interface index. Round two delivered CPU/VU encoding tables (integer-instructions.csv, vector-instructions.csv), diagrams (memory-map.md, architecture.md), and encoding-table contract.
+**Previous rounds**: Round one: spec repo layout, ROM/spec-version contracts, quickstart. Round two: CPU/VU encoding tables, diagrams (memory-map, architecture), encoding-table contract. Round three: GPU commands CSV, shader opcodes CSV, README/quickstart updates.
 
 ## Summary
 
-Round three adds **GPU command** and **mini-shader opcode** encoding references to the spec repo: CSV (or equivalent) exports of GPU command types (spec §5.2) and mini-shader instruction opcodes (spec §5.6) so that emulator and SDK shader/command-buffer tooling have a single, spec-derived source. No new behavior or interfaces; documentation and data only. Optional: short contract or README extension for GPU/shader table format.
+Round four adds a **memory-mapped I/O and system register reference** to the spec repo: a single consolidated reference document (Markdown) that lists I/O regions (base address, size, name, spec section) and system/timer/interrupt registers (offset, name, access, description, spec section) from NEXUS32_Specification_v1.0.md §3 and §8. This gives emulator and SDK implementers one place to look up base addresses and key register layouts without re-scanning the full spec. No new behavior or interfaces; documentation only. Optional: CONTRIBUTING or spec-change workflow note.
 
 ## Technical Context
 
-**Language/Version**: N/A (spec repo). Same as round two: CSV UTF-8 for encoding tables.  
+**Language/Version**: N/A (spec repo). Markdown; no code.  
 **Primary Dependencies**: None.  
-**Storage**: New files in `encoding-tables/` at repository root: `gpu-commands.csv`, `shader-opcodes.csv` (or equivalent).  
-**Testing**: Manual check that table rows match NEXUS32_Specification_v1.0.md §5.2 and §5.6.  
-**Target Platform**: This repo: any (docs/data); consumers: emulator (command buffer parser, shader compiler), SDK (shaderc, tools).  
-**Project Type**: Documentation / specification repository; round three extends encoding-tables with GPU and shader data.  
+**Storage**: New file(s) at repository root, e.g. `reference/io-registers.md` or `reference-tables/io-and-system-registers.md` (directory and name TBD in research).  
+**Testing**: Manual check that every row/section cites the spec and matches spec §3 (memory map) and §8 (timer, system, interrupt registers).  
+**Target Platform**: This repo: any (docs); consumers: emulator, SDK (register headers, debuggers).  
+**Project Type**: Documentation / specification repository; round four adds reference documentation.  
 **Performance Goals**: N/A.  
-**Constraints**: Tables MUST be derived from the spec only; spec is authoritative.  
-**Scale/Scope**: Round three: add gpu-commands.csv (cmd_type, name, size_byte, spec_ref) and shader-opcodes.csv (opcode_hex, mnemonic, operation, spec_ref); update encoding-tables README and quickstart.
+**Constraints**: Reference MUST be derived from the spec only; spec is authoritative.  
+**Scale/Scope**: Round four: one consolidated I/O + system register reference; optional CONTRIBUTING or workflow note. No new CSVs in encoding-tables; this is a prose/table reference.
 
 ## Constitution Check
 
@@ -27,12 +27,12 @@ Round three adds **GPU command** and **mini-shader opcode** encoding references 
 
 | Principle | Status | Notes |
 |-----------|--------|--------|
-| I. Specification as Single Source of Truth | Pass | GPU and shader tables are derived from spec §5; no new encodings. |
+| I. Specification as Single Source of Truth | Pass | Reference is derived from spec §3, §8; no new addresses or behavior. |
 | II. Determinism and Virtual Machine Contract | Pass | No change to VM contract. |
 | III. Forward Compatibility and Additive Changes | Pass | No change to version or ROM contracts. |
-| IV. Component Boundaries and Interfaces | Pass | Tables document VGP command and shader interfaces per spec. |
-| V. Testability and Spec Compliance | Pass | Tables enable command-buffer and shader-compiler tests against spec. |
-| VI. Version and Capability Reporting | Pass | Tables tied to spec version (1.0). |
+| IV. Component Boundaries and Interfaces | Pass | Reference documents existing I/O and system interfaces per spec. |
+| V. Testability and Spec Compliance | Pass | Enables implementers to verify register layout and addresses against spec. |
+| VI. Version and Capability Reporting | Pass | Reference tied to spec version (1.0). |
 
 No violations; no complexity tracking required.
 
@@ -42,38 +42,32 @@ No violations; no complexity tracking required.
 
 ```text
 specs/001-nexus32-spec-baseline/
-├── plan.md              # This file (Round Three)
-├── research.md          # Phase 0 (Round Three decisions appended)
-├── data-model.md        # Phase 1 (optional: GPU command / shader opcode entities)
-├── quickstart.md        # Phase 1 (Round Three section added)
-├── contracts/           # Optional: extend or reference encoding-table contract
+├── plan.md              # This file (Round Four)
+├── research.md          # Phase 0 (Round Four decisions appended)
+├── data-model.md        # Phase 1 (optional: I/O register reference entity)
+├── quickstart.md        # Phase 1 (Round Four section added)
+├── contracts/
 ├── checklists/
-│   └── requirements.md
-└── tasks.md             # From /speckit.tasks for Round Three
+└── tasks.md             # From /speckit.tasks for Round Four
 ```
 
-### Source Code (repository root — spec repo, Round Three additions)
+### Repository root (Round Four additions)
 
 ```text
 /
 ├── NEXUS32_Specification_v1.0.md
 ├── CHANGELOG.md
 ├── diagrams/
-│   ├── README.md
-│   ├── memory-map.md
-│   └── architecture.md
 ├── encoding-tables/
-│   ├── README.md
-│   ├── integer-instructions.csv
-│   ├── vector-instructions.csv
-│   ├── gpu-commands.csv          # Round three: cmd_type, name, size, spec_ref (§5.2)
-│   └── shader-opcodes.csv        # Round three: opcode, mnemonic, operation (§5.6)
+├── reference/                    # Round four: I/O and system register reference
+│   ├── README.md                 # (optional) Purpose and spec ref
+│   └── io-and-system-registers.md  # Consolidated table(s) from §3, §8
 ├── .specify/
 ├── specs/
 └── README.md
 ```
 
-**Structure Decision**: Same spec-only repo. Round three adds two CSV files under `encoding-tables/` for GPU command types and mini-shader opcodes, following the same “spec-derived, spec authoritative” pattern as round two.
+**Structure Decision**: Add a `reference/` directory (or equivalent) for consolidated reference docs. Round four adds one file: I/O regions + system/timer/interrupt registers, all citing spec sections. No new contract unless we later add a “reference document format” contract; for round four, README in reference/ or a short intro in the doc suffices.
 
 ## Complexity Tracking
 

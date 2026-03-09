@@ -16,6 +16,7 @@ This repository is **nexus32-spec**: the single source of truth for the NEXUS-32
 
 - **[diagrams/](diagrams/)** — Architecture (§1) and memory map (§3): [memory-map.md](diagrams/memory-map.md), [architecture.md](diagrams/architecture.md). See [diagrams/README.md](diagrams/README.md).
 - **[encoding-tables/](encoding-tables/)** — CSV encodings from spec §2 (CPU/VU) and §5 (GPU/shaders): [integer-instructions.csv](encoding-tables/integer-instructions.csv), [vector-instructions.csv](encoding-tables/vector-instructions.csv), [gpu-commands.csv](encoding-tables/gpu-commands.csv) (GPU command types §5.2), [shader-opcodes.csv](encoding-tables/shader-opcodes.csv) (mini-shader opcodes §5.6). See [encoding-tables/README.md](encoding-tables/README.md).
+- **[reference/](reference/)** — I/O and system register reference from spec §3, §8: [io-and-system-registers.md](reference/io-and-system-registers.md). See [reference/README.md](reference/README.md).
 
 ## Ecosystem Repositories
 
